@@ -126,22 +126,151 @@ $(document).ready(function () {
 <div id="course-description" class="section level1">
 <h1>Course Description</h1>
 <p><em>In this interactive tutorial, you will learn how to perform sophisticated dplyr techniques to carry out your data manipulation with R. First you will master the five verbs of R data manipulation with dplyr: select, mutate, filter, arrange and summarise. Next, you will learn how you can chain your dplyr operations using the pipe operator of the magrittr package. In the final section, the focus is on practicing how to subset your data using the group_by function, and how you can access data stored outside of R in a database. All said and done, you will be familiar with data manipulation tools and techniques that will allow you to efficiently manipulate data.</em></p>
-<div id="introduction-to-dplyr-and-tbls" class="section level2">
-<h2>Introduction to dplyr and tbls</h2>
+<div id="introduction-to-dplyr-and-tbls" class="section level3">
+<h3>Introduction to dplyr and tbls</h3>
 <p><em>Introduction to the dplyr package and the tbl class. Learn the philosophy that guides dplyr, discover some useful applications of the dplyr package, and meet the data structures that dplyr uses behind the scenes.</em></p>
+</div>
+<div id="load-the-dplyr-and-hflights-package" class="section level3">
+<h3>Load the dplyr and hflights package</h3>
+<p>Welcome to the interactive exercises part of your dplyr course. Here you will learn the ins and outs of working with dplyr. dplyr is an R package, a collection of functions and data sets that enhance the R language.</p>
+<p>Throughout this course you will use dplyr to analyze a data set of airline flight data containing flights that departed from Houston. This data is stored in a package called hflights.</p>
+<p>Both dplyr and hflights are already installed on DataCamp’s servers, so loading them with library() will get you up and running.</p>
+</div>
+<div id="instructions" class="section level3">
+<h3>Instructions</h3>
+<p>Load the dplyr package. Load the hflights package. A variable called hflights will become available, a data.frame representing the data set. Use both head() and summary() on the hflights data frame to get to know the data. Can you guess the meaning of all variables?</p>
+<pre class="r"><code>#Install package
+
+#install.packages(&quot;dplyr&quot;)
+#install.packages(&quot;hflights&quot;)
+
+# Load the dplyr package
+library(&quot;dplyr&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code># Load the hflights package
+library(&quot;hflights&quot;)
+
+# Call both head() and summary() on hflights
+head(hflights)</code></pre>
+<pre><code>##      Year Month DayofMonth DayOfWeek DepTime ArrTime UniqueCarrier
+## 5424 2011     1          1         6    1400    1500            AA
+## 5425 2011     1          2         7    1401    1501            AA
+## 5426 2011     1          3         1    1352    1502            AA
+## 5427 2011     1          4         2    1403    1513            AA
+## 5428 2011     1          5         3    1405    1507            AA
+## 5429 2011     1          6         4    1359    1503            AA
+##      FlightNum TailNum ActualElapsedTime AirTime ArrDelay DepDelay Origin
+## 5424       428  N576AA                60      40      -10        0    IAH
+## 5425       428  N557AA                60      45       -9        1    IAH
+## 5426       428  N541AA                70      48       -8       -8    IAH
+## 5427       428  N403AA                70      39        3        3    IAH
+## 5428       428  N492AA                62      44       -3        5    IAH
+## 5429       428  N262AA                64      45       -7       -1    IAH
+##      Dest Distance TaxiIn TaxiOut Cancelled CancellationCode Diverted
+## 5424  DFW      224      7      13         0                         0
+## 5425  DFW      224      6       9         0                         0
+## 5426  DFW      224      5      17         0                         0
+## 5427  DFW      224      9      22         0                         0
+## 5428  DFW      224      9       9         0                         0
+## 5429  DFW      224      6      13         0                         0</code></pre>
+<pre class="r"><code>summary(hflights)</code></pre>
+<pre><code>##       Year          Month          DayofMonth      DayOfWeek    
+##  Min.   :2011   Min.   : 1.000   Min.   : 1.00   Min.   :1.000  
+##  1st Qu.:2011   1st Qu.: 4.000   1st Qu.: 8.00   1st Qu.:2.000  
+##  Median :2011   Median : 7.000   Median :16.00   Median :4.000  
+##  Mean   :2011   Mean   : 6.514   Mean   :15.74   Mean   :3.948  
+##  3rd Qu.:2011   3rd Qu.: 9.000   3rd Qu.:23.00   3rd Qu.:6.000  
+##  Max.   :2011   Max.   :12.000   Max.   :31.00   Max.   :7.000  
+##                                                                 
+##     DepTime        ArrTime     UniqueCarrier        FlightNum   
+##  Min.   :   1   Min.   :   1   Length:227496      Min.   :   1  
+##  1st Qu.:1021   1st Qu.:1215   Class :character   1st Qu.: 855  
+##  Median :1416   Median :1617   Mode  :character   Median :1696  
+##  Mean   :1396   Mean   :1578                      Mean   :1962  
+##  3rd Qu.:1801   3rd Qu.:1953                      3rd Qu.:2755  
+##  Max.   :2400   Max.   :2400                      Max.   :7290  
+##  NA's   :2905   NA's   :3066                                    
+##    TailNum          ActualElapsedTime    AirTime         ArrDelay      
+##  Length:227496      Min.   : 34.0     Min.   : 11.0   Min.   :-70.000  
+##  Class :character   1st Qu.: 77.0     1st Qu.: 58.0   1st Qu.: -8.000  
+##  Mode  :character   Median :128.0     Median :107.0   Median :  0.000  
+##                     Mean   :129.3     Mean   :108.1   Mean   :  7.094  
+##                     3rd Qu.:165.0     3rd Qu.:141.0   3rd Qu.: 11.000  
+##                     Max.   :575.0     Max.   :549.0   Max.   :978.000  
+##                     NA's   :3622      NA's   :3622    NA's   :3622     
+##     DepDelay          Origin              Dest              Distance     
+##  Min.   :-33.000   Length:227496      Length:227496      Min.   :  79.0  
+##  1st Qu.: -3.000   Class :character   Class :character   1st Qu.: 376.0  
+##  Median :  0.000   Mode  :character   Mode  :character   Median : 809.0  
+##  Mean   :  9.445                                         Mean   : 787.8  
+##  3rd Qu.:  9.000                                         3rd Qu.:1042.0  
+##  Max.   :981.000                                         Max.   :3904.0  
+##  NA's   :2905                                                            
+##      TaxiIn           TaxiOut         Cancelled       CancellationCode  
+##  Min.   :  1.000   Min.   :  1.00   Min.   :0.00000   Length:227496     
+##  1st Qu.:  4.000   1st Qu.: 10.00   1st Qu.:0.00000   Class :character  
+##  Median :  5.000   Median : 14.00   Median :0.00000   Mode  :character  
+##  Mean   :  6.099   Mean   : 15.09   Mean   :0.01307                     
+##  3rd Qu.:  7.000   3rd Qu.: 18.00   3rd Qu.:0.00000                     
+##  Max.   :165.000   Max.   :163.00   Max.   :1.00000                     
+##  NA's   :3066      NA's   :2947                                         
+##     Diverted       
+##  Min.   :0.000000  
+##  1st Qu.:0.000000  
+##  Median :0.000000  
+##  Mean   :0.002853  
+##  3rd Qu.:0.000000  
+##  Max.   :1.000000  
+## </code></pre>
+</div>
+<div id="explore-the-data-set" class="section level3">
+<h3>Explore the data set</h3>
+<p>A data scientist must be familiar with his or her data. Experiment with the data set in the console and maybe try to generate some insightful plots. For your convenience, hflights is already loaded into the workspace.</p>
+<p>How many observations and how many variables are contained in the hflights data set?</p>
+<pre class="r"><code>dim(hflights)</code></pre>
+<pre><code>## [1] 227496     21</code></pre>
+<pre class="r"><code>glimpse(hflights)</code></pre>
+<pre><code>## Observations: 227,496
+## Variables: 21
+## $ Year              &lt;int&gt; 2011, 2011, 2011, 2011, 2011, 2011, 2011, 20...
+## $ Month             &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,...
+## $ DayofMonth        &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1...
+## $ DayOfWeek         &lt;int&gt; 6, 7, 1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6,...
+## $ DepTime           &lt;int&gt; 1400, 1401, 1352, 1403, 1405, 1359, 1359, 13...
+## $ ArrTime           &lt;int&gt; 1500, 1501, 1502, 1513, 1507, 1503, 1509, 14...
+## $ UniqueCarrier     &lt;chr&gt; &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;AA&quot;, &quot;A...
+## $ FlightNum         &lt;int&gt; 428, 428, 428, 428, 428, 428, 428, 428, 428,...
+## $ TailNum           &lt;chr&gt; &quot;N576AA&quot;, &quot;N557AA&quot;, &quot;N541AA&quot;, &quot;N403AA&quot;, &quot;N49...
+## $ ActualElapsedTime &lt;int&gt; 60, 60, 70, 70, 62, 64, 70, 59, 71, 70, 70, ...
+## $ AirTime           &lt;int&gt; 40, 45, 48, 39, 44, 45, 43, 40, 41, 45, 42, ...
+## $ ArrDelay          &lt;int&gt; -10, -9, -8, 3, -3, -7, -1, -16, 44, 43, 29,...
+## $ DepDelay          &lt;int&gt; 0, 1, -8, 3, 5, -1, -1, -5, 43, 43, 29, 19, ...
+## $ Origin            &lt;chr&gt; &quot;IAH&quot;, &quot;IAH&quot;, &quot;IAH&quot;, &quot;IAH&quot;, &quot;IAH&quot;, &quot;IAH&quot;, &quot;I...
+## $ Dest              &lt;chr&gt; &quot;DFW&quot;, &quot;DFW&quot;, &quot;DFW&quot;, &quot;DFW&quot;, &quot;DFW&quot;, &quot;DFW&quot;, &quot;D...
+## $ Distance          &lt;int&gt; 224, 224, 224, 224, 224, 224, 224, 224, 224,...
+## $ TaxiIn            &lt;int&gt; 7, 6, 5, 9, 9, 6, 12, 7, 8, 6, 8, 4, 6, 5, 6...
+## $ TaxiOut           &lt;int&gt; 13, 9, 17, 22, 9, 13, 15, 12, 22, 19, 20, 11...
+## $ Cancelled         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
+## $ CancellationCode  &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, ...
+## $ Diverted          &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...</code></pre>
+</div>
+<div id="convert-data.frame-to-tibble" class="section level3">
+<h3>Convert data.frame to tibble</h3>
+<p>As Garrett explained, a tbl (pronounced tibble) is just a special kind of data.frame. They make your data easier to look at, but also easier to work with. On top of this, it is straightforward to derive a tbl from a data.frame structure using tbl_df().</p>
+<p>The tbl format changes how R displays your data, but it does not change the data’s underlying data structure. A tbl inherits the original class of its input, in this case, a data.frame. This means that you can still manipulate the tbl as if it were a data.frame. In other words, you can do anything with the hflights tbl that you could do with the hflights data.frame.</p>
+<p>Instructions Convert hflights (which is a data.frame) into a tbl, also named hflights. Display the new hflights in your console window. Notice the easy-to-read layout. To see how tbls behave like data.frames, save the UniqueCarrier column of hflights as an object named carriers, using base R syntax only.</p>
 </div>
 </div>
 <div id="select-and-mutate" class="section level1">
 <h1>Select and mutate</h1>
 <p><em>Get familiar with dplyr’s manipulation verbs. Meet the five verbs and then practice using the mutate and select verbs.</em></p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
 </div>
 <div id="filter-and-arrange" class="section level1">
 <h1>Filter and arrange</h1>
