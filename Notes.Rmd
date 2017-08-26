@@ -1,5 +1,5 @@
 ---
-title: "Notes"
+title: "Data Manipulation in R with dplyr"
 author: "Alan"
 date: "25 de agosto de 2017"
 output: html_document
@@ -9,22 +9,50 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+# Course Description
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+_In this interactive tutorial, you will learn how to perform sophisticated dplyr techniques to carry out your data manipulation with R. First you will master the five verbs of R data manipulation with dplyr: select, mutate, filter, arrange and summarise. Next, you will learn how you can chain your dplyr operations using the pipe operator of the magrittr package. In the final section, the focus is on practicing how to subset your data using the group_by function, and how you can access data stored outside of R in a database. All said and done, you will be familiar with data manipulation tools and techniques that will allow you to efficiently manipulate data._
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Introduction to dplyr and tbls
+
+_Introduction to the dplyr package and the tbl class. Learn the philosophy that guides dplyr, discover some useful applications of the dplyr package, and meet the data structures that dplyr uses behind the scenes._
+
+```{r}
+
+```
+
+
+# Select and mutate
+
+_Get familiar with dplyr's manipulation verbs. Meet the five verbs and then practice using the mutate and select verbs._
+
+
+
 
 ```{r cars}
 summary(cars)
 ```
 
-## Including Plots
+# Filter and arrange
 
-You can also embed plots, for example:
+_Learn how to search through the observations in your data set (and extract useful observations) with the filter function. Rearrange the observations in your data set with the arrange verb._
+
+# Summarise and the pipe operator
+
+_Master the data manipulation verb summarise, and practice combining the five verbs to solve advanced data manipulation tasks. Learn to chain the operators together with the piping operator._
+
+
+# Group_by and working with databases
+
+_Complete your mastery of data manipulation with group-wise operations and databases. Learn to use group_by to group your data into subsets of observations, and use dplyr to access data stored outside of R in a database._
+
+
 
 ```{r pressure, echo=FALSE}
 plot(pressure)
 ```
+
+
+
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
