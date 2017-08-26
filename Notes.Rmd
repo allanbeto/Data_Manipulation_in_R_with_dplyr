@@ -34,11 +34,25 @@ Use both head() and summary() on the hflights data frame to get to know the data
 ```{r}
 #Install package
 
-install.packages("dplyr")
-install.packages("hflights")
+#install.packages("dplyr")
+#install.packages("hflights")
+
+# Load the dplyr package
+library("dplyr")
+
+# Load the hflights package
+library("hflights")
+
+# Call both head() and summary() on hflights
+head(hflights)
 
 ```
 
+```{r}
+
+summary(hflights)
+
+```
 
 # Select and mutate
 
