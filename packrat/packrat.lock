@@ -4,10 +4,25 @@ RVersion: 3.4.1
 Repos: CRAN=https://cran.rstudio.com/,
     CRANextra=http://www.stats.ox.ac.uk/pub/RWin
 
+Package: BH
+Source: CRAN
+Version: 1.62.0-1
+Hash: 14dfb3e8ffe20996118306ff4de1fab2
+
+Package: R6
+Source: CRAN
+Version: 2.2.2
+Hash: b2366cd9d2f3851a5704b4e192b985c2
+
 Package: Rcpp
 Source: CRAN
 Version: 0.12.12
 Hash: 8b3d5ebb9a9a4ab5c86b3a81b0cfb774
+
+Package: assertthat
+Source: CRAN
+Version: 0.2.0
+Hash: e8805df54c65ac96d50235c44a82615c
 
 Package: backports
 Source: CRAN
@@ -18,6 +33,17 @@ Package: base64enc
 Source: CRAN
 Version: 0.1-3
 Hash: c590d29e555926af053055e23ee79efb
+
+Package: bindr
+Source: CRAN
+Version: 0.1
+Hash: e3a02070cf705d3ad1c5af1635a515a3
+
+Package: bindrcpp
+Source: CRAN
+Version: 0.2
+Hash: 8ab2dbf7ea120cf2d31183e0bf388485
+Requires: Rcpp, bindr, plogr
 
 Package: bitops
 Source: CRAN
@@ -35,6 +61,13 @@ Source: CRAN
 Version: 0.6.12
 Hash: e53fb8c58673df868183697e39a6a4d6
 
+Package: dplyr
+Source: CRAN
+Version: 0.7.2
+Hash: a4e8be0458f97a40806bcced654de815
+Requires: BH, R6, Rcpp, assertthat, bindrcpp, glue, magrittr,
+    pkgconfig, plogr, rlang, tibble
+
 Package: evaluate
 Source: CRAN
 Version: 0.10.1
@@ -45,6 +78,16 @@ Package: formatR
 Source: CRAN
 Version: 1.5
 Hash: 258cf79a8dbeedf1c981cdb53837d2af
+
+Package: glue
+Source: CRAN
+Version: 1.1.1
+Hash: dfd5a27768175ae51d08dc6beba1ef11
+
+Package: hflights
+Source: CRAN
+Version: 0.1
+Hash: 04fd11191440177489968e359b4d480a
 
 Package: highr
 Source: CRAN
@@ -93,6 +136,21 @@ GithubUsername: rstudio
 GithubRef: master
 GithubSha1: 81908922d10d28daf8effae258dbe6adff67e605
 
+Package: pkgconfig
+Source: CRAN
+Version: 2.0.1
+Hash: 0dda4a2654a22b36a715c2b0b6fbacac
+
+Package: plogr
+Source: CRAN
+Version: 0.1-1
+Hash: fb19215402e2d9f1c7f803dcaa806fc2
+
+Package: rlang
+Source: CRAN
+Version: 0.1.2
+Hash: c17b638e3282aa222a47112d7a60bc66
+
 Package: rmarkdown
 Source: CRAN
 Version: 1.6
@@ -116,6 +174,12 @@ Source: CRAN
 Version: 1.2.0
 Hash: 25a86d7f410513ebb7c0bc6a5e16bdc3
 Requires: magrittr, stringi
+
+Package: tibble
+Source: CRAN
+Version: 1.3.4
+Hash: 3111e0d62502af60fe0fa8b4213fedad
+Requires: Rcpp, rlang
 
 Package: yaml
 Source: CRAN

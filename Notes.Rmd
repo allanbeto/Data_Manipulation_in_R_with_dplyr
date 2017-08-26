@@ -17,7 +17,25 @@ _In this interactive tutorial, you will learn how to perform sophisticated dplyr
 
 _Introduction to the dplyr package and the tbl class. Learn the philosophy that guides dplyr, discover some useful applications of the dplyr package, and meet the data structures that dplyr uses behind the scenes._
 
+# Load the dplyr and hflights package
+
+Welcome to the interactive exercises part of your dplyr course. Here you will learn the ins and outs of working with dplyr. dplyr is an R package, a collection of functions and data sets that enhance the R language.
+
+Throughout this course you will use dplyr to analyze a data set of airline flight data containing flights that departed from Houston. This data is stored in a package called hflights.
+
+Both dplyr and hflights are already installed on DataCamp's servers, so loading them with library() will get you up and running.
+
+Instructions
+Load the dplyr package.
+Load the hflights package. A variable called hflights will become available, a data.frame representing the data set.
+Use both head() and summary() on the hflights data frame to get to know the data. Can you guess the meaning of all variables?
+
+
 ```{r}
+#Install package
+
+install.packages("dplyr")
+install.packages("hflights")
 
 ```
 
