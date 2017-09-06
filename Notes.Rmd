@@ -56,7 +56,7 @@ A data scientist must be familiar with his or her data. Experiment with the data
 How many observations and how many variables are contained in the hflights data set?
 
 ```{r}
-
+hflights <- select(hflights, 1:21)
 dim(hflights)
 glimpse(hflights)
 
@@ -72,6 +72,18 @@ Instructions
 Convert hflights (which is a data.frame) into a tbl, also named hflights.
 Display the new hflights in your console window. Notice the easy-to-read layout.
 To see how tbls behave like data.frames, save the UniqueCarrier column of hflights as an object named carriers, using base R syntax only.
+```{r}
+#precode
+rm(list = ls())
+url <- "http://s3.amazonaws.com/assets.datacamp.com/course/dplyr/hflights.RData"
+#download.file(url, "hflights.RData")
+
+load("hflights.RData")
+hflights <- as.data.frame(hflights)
+
+
+
+```
 
 ```{r}
 # Both the dplyr and hflights packages are loaded
@@ -84,40 +96,6 @@ hflights
 
 # Create the object carriers
 carriers <- hflights$UniqueCarrier
-
-```
-
-###Changing labels of hflights, part 1 of 2
-
-A bit of cleaning would be a good idea since the UniqueCarrier variable of hflights uses a confusing code system.
-
-To do this, let's work with a lookup table, that comes in the form of a named vector. When you subset the lookup table with a character string (like the character strings in UniqueCarrier), R will return the values of the lookup table that correspond to the names in the character string. To see how this works, run following code in the console:
-
-two <- c("AA", "AS")
-lut <- c("AA" = "American", 
-         "AS" = "Alaska", 
-         "B6" = "JetBlue")
-two <- lut[two]
-two
-
-Instructions
-Add a new Carrier column to hflights by combining lut with the UniqueCarrier column of hflights.
-It's rather hard to see if you did things right, since the Carrier variable does not appear when you print hflights. Use the glimpse() function on hflights instead.
-
-```{r}
-
-# Both the dplyr and hflights packages are loaded into workspace
-lut <- c("AA" = "American", "AS" = "Alaska", "B6" = "JetBlue", "CO" = "Continental", 
-         "DL" = "Delta", "OO" = "SkyWest", "UA" = "United", "US" = "US_Airways", 
-         "WN" = "Southwest", "EV" = "Atlantic_Southeast", "F9" = "Frontier", 
-         "FL" = "AirTran", "MQ" = "American_Eagle", "XE" = "ExpressJet", "YV" = "Mesa")
-
-# Add the Carrier column to hflights
-hflights$Carrier <- lut[hflights$UniqueCarrier]
-
-# Glimpse at hflights
-glimpse(hflights)
-
 
 ```
 
@@ -165,6 +143,25 @@ A lookup table lut has already been created for you, that converts the alphabeti
 Instructions
 Use lut to change the labels of the CancellationCode column of hflights. Store the recoded vector in a new column Code.
 As before, check your results by glimpsing at them.
+
+```{r}
+
+#pre exercise code
+
+rm(hflights)
+
+load("hflights.RData")
+
+hflights$Carrier <- c("AA" = "American", "AS" = "Alaska", "B6" = "JetBlue", "CO" = "Continental",                              "DL" = "Delta", "OO" = "SkyWest", "UA" = "United", "US" = "US_Airways",
+                      "WN" = "Southwest", "EV" = "Atlantic_Southeast", "F9" = "Frontier",
+                      "FL" = "AirTran", "MQ" = "American_Eagle", "XE" = "ExpressJet", "YV" = "Mesa")[hflights$UniqueCarrier]
+
+hflights$CancellationCode[nchar(hflights$CancellationCode) == 0] <- "E"
+
+```
+
+
+
 
 
 ```{r}
@@ -264,6 +261,18 @@ Use select() and a helper function to print out a tbl that contains just ArrDela
 Use a combination of helper functions and variable names to print out only the UniqueCarrier, FlightNum, TailNum, Cancelled, and CancellationCode columns of hflights.
 Find the most concise way to return the following columns with select and its helper functions: DepTime, ArrTime, ActualElapsedTime, AirTime, ArrDelay, DepDelay. Use only helper functions!
 
+
+```{r}
+
+url <- "http://s3.amazonaws.com/assets.datacamp.com/course/dplyr/hflights2.RData"
+# download.file(url, "hflights2.RData")
+
+load("hflights2.RData")
+
+
+```
+
+
 ```{r}
 # As usual, hflights is pre-loaded as a tbl, together with the necessary libraries.
 
@@ -338,43 +347,261 @@ m2 <- mutate(hflights, TotalTaxi = TaxiIn + TaxiOut, ActualGroundTime = ActualEl
 m2
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Filter and arrange
 
 _Learn how to search through the observations in your data set (and extract useful observations) with the filter function. Rearrange the observations in your data set with the arrange verb._
 
+###Logical operators
+
+R comes with a set of logical operators that you can use inside filter():
+
+x < y, TRUE if x is less than y
+x <= y, TRUE if x is less than or equal to y
+x == y, TRUE if x equals y
+x != y, TRUE if x does not equal y
+x >= y, TRUE if x is greater than or equal to y
+x > y, TRUE if x is greater than y
+x %in% c(a, b, c), TRUE if x is in the vector c(a, b, c)
+The following example filters df such that only the observations for which a is positive, are kept:
+
+filter(df, a > 0)
+Instructions
+Print out all flights in hflights that traveled 3000 or more miles.
+Print out all flights in hflights flown by JetBlue, Southwest, or Delta.
+Extract from hflights all flights where taxiing took longer than the actual flight. Avoid the use of mutate() and do the math directly in the logical expression of filter().
+
+```{r}
+# hflights is at your disposal as a tbl, with clean carrier names
+
+# All flights that traveled 3000 miles or more
+filter(hflights, Distance >= 3000)
+
+# All flights flown by one of JetBlue, Southwest, or Delta
+filter(hflights, UniqueCarrier %in% c("JetBlue", "Southwest", "Delta"))
+
+# All flights where taxiing took longer than flying
+filter(hflights, TaxiIn + TaxiOut > AirTime)
+
+```
+
+
+###Combining tests using boolean operators
+
+R also comes with a set of boolean operators that you can use to combine multiple logical tests into a single test. These include & (and), | (or), and ! (not). Instead of using the & operator, you can also pass several logical tests to filter(), separated by commas. The following two calls are completely equivalent:
+
+filter(df, a > 0 & b > 0)
+filter(df, a > 0, b > 0)
+Next, is.na() will also come in handy. This example keeps the observations in df for which the variable x is not NA:
+
+filter(df, !is.na(x))
+Instructions
+Use R's logical and boolean operators to select just the rows where a flight left before 5:00 am (500) or arrived after 10:00 pm (2200).
+Print out all of the flights that departed late but arrived ahead of schedule. Use DepDelay and ArrDelay for this.
+Find all of the flights that were cancelled after being delayed. These are flights that were cancelled, while having a DepDelay greater than zero.
+
+```{r}
+# hflights is at your service as a tbl!
+
+# All flights that departed before 5am or arrived after 10pm
+filter(hflights, ArrTime > 2200 | DepTime < 500 )
+
+# All flights that departed late but arrived ahead of schedule
+filter(hflights, DepDelay > 0, ArrDelay < 0 )
+
+# All flights that were cancelled after being delayed
+filter(hflights, DepDelay > 0, Cancelled == 1)
+
+```
+
+
+###Blend together what you've learned!
+
+So far, you have learned three data manipulation functions in the dplyr package. Time for a summarizing exercise. You will generate a new dataset from the hflights dataset that contains some useful information on flights that had JFK airport as their destination. You will need select(), mutate() and filter().
+
+Instructions
+First, use filter() to select the flights that had JFK as their destination and save this result to c1.
+Second, add a new column named Date to c1: paste() together the Year, Month and DayofMonth variables, separate them by a "-" by using the sep attribute of paste(). Save the resulting data frame as c2.
+Finally, select some columns to provide an overview: Date, DepTime, ArrTime and TailNum, in this order. Do not assign the resulting data frame to a variable; just print it to the console.
+
+```{r}
+# hflights is already available in the workspace
+
+# Select the flights that had JFK as their destination: c1
+c1 <- filter(hflights, Dest == "JFK" )
+c1
+# Combine the Year, Month and DayofMonth variables to create a Date column: c2
+
+c2 <- mutate(c1, Date = paste(Year, Month, DayofMonth, sep="-"))
+c2
+# Print out a selection of columns of c2
+select(c2, Date, DepTime, ArrTime, TailNum)
+
+```
+
+
+Arranging your data
+
+arrange() can be used to rearrange rows according to any type of data. If you pass arrange() a character variable, for example, R will rearrange the rows in alphabetical order according to values of the variable. If you pass a factor variable, R will rearrange the rows according to the order of the levels in your factor (running levels() on the variable reveals this order).
+
+dtc has already been defined on the right. It's up to you to write some arrange() expressions to display its contents appropriately!
+
+Instructions
+Arrange dtc, by departure delays so that the shortest departure delay is at the top of the data set.
+Arrange dtc so that flights that were cancelled for the same reason appear next to each other.
+Arrange dtc so that flights by the same carrier appear next to each other. Within each carrier, flights that have smaller departure delays appear before flights that have higher departure delays. Do this in a one-liner.
+
+```{r}
+# dplyr and the hflights tbl are available
+
+# Definition of dtc
+dtc <- filter(hflights, Cancelled == 1, !is.na(DepDelay))
+
+# Arrange dtc by departure delays
+arrange(dtc, DepDelay)
+
+# Arrange dtc so that cancellation reasons are grouped
+
+arrange(dtc, CancellationCode)
+
+# Arrange dtc according to carrier and departure delays
+arrange (dtc, UniqueCarrier, DepDelay)
+
+
+```
+
+
+### Reverse the order of arranging
+
+By default, arrange() arranges the rows from smallest to largest. Rows with the smallest value of the variable will appear at the top of the data set. You can reverse this behavior with the desc() function. arrange() will reorder the rows from largest to smallest values of a variable if you wrap the variable name in desc() before passing it to arrange().
+
+Instructions
+Arrange hflights so that flights by the same carrier appear next to each other and within each carrier, flights that have larger departure delays appear before flights that have smaller departure delays.
+Arrange the flights in hflights by their total delay (the sum of DepDelay and ArrDelay). Try to do this directly inside arrange().
+
+
+
+```{r}
+# dplyr and the hflights tbl are available
+
+# Arrange according to carrier and decreasing departure delays
+arrange(hflights, UniqueCarrier, desc(DepDelay))
+
+# Arrange flights by total delay (normal order).
+df<- arrange(hflights, DepDelay + ArrDelay)
+
+select(df, 12:13)
+
+df1 <- mutate(df, Total= ArrDelay + DepDelay)
+
+select(arrange(df1, Total),22)
+
+
+```
+
+
+
+
 # Summarise and the pipe operator
 
 _Master the data manipulation verb summarise, and practice combining the five verbs to solve advanced data manipulation tasks. Learn to chain the operators together with the piping operator._
+
+###The syntax of summarise
+
+summarise(), the last of the 5 verbs, follows the same syntax as mutate(), but the resulting dataset consists of a single row instead of an entire new column in the case of mutate().
+
+In contrast to the four other data manipulation functions, summarise() does not return an altered copy of the dataset it is summarizing; instead, it builds a new dataset that contains only the summarising statistics.
+
+Instructions
+Use summarise() to print out a summary of hflights containing two variables: min_dist, the shortest distance flown, and max_dist, the longest distance flown.
+Print out a summary of hflights with a single variable, max_div: the longest Distance for diverted flights. You will need one of the four other verbs to do this!
+
+```{r}
+# hflights and dplyr are loaded in the workspace
+
+# Print out a summary with variables min_dist and max_dist
+summarise(hflights, min_dist = min(Distance), max_dist = max(Distance))
+
+# Print out a summary with variable max_div
+summarise(filter(hflights, Diverted == 1), max_div = max(Distance))
+
+```
+
+
+###Aggregate functions
+
+You can use any function you like in summarise() so long as the function can take a vector of data and return a single number. R contains many aggregating functions, as dplyr calls them:
+
+min(x) - minimum value of vector x.
+max(x) - maximum value of vector x.
+mean(x) - mean value of vector x.
+median(x) - median value of vector x.
+quantile(x, p) - pth quantile of vector x.
+sd(x) - standard deviation of vector x.
+var(x) - variance of vector x.
+IQR(x) - Inter Quartile Range (IQR) of vector x.
+diff(range(x)) - total range of vector x.
+Instructions
+Remove rows that have NAs in the arrival delay column and save the resulting dataset to temp1.
+Print out a summary of temp1 with the following variables (in this order):
+earliest: the minimum arrival delay,
+average: the average arrival delay,
+latest: the longest arrival delay,
+sd: the standard deviation for arrival delays.
+Filter hflights such that only rows that have no NA TaxiIn and no NA TaxiOut are kept; save this temporary result to temp2.
+Print out a summary of temp2, with one variable, max_taxi_diff: the biggest absolute difference in time between TaxiIn and TaxiOut for a single flight.
+
+```{r}
+# hflights is available
+
+# Remove rows that have NA ArrDelay: temp1
+temp1 <- filter(hflights, !is.na(ArrDelay))
+
+# Generate summary about ArrDelay column of temp1
+summarise(temp1, earliest = min(ArrDelay), average = mean(ArrDelay), latest = max(ArrDelay), sd = sd(ArrDelay))
+
+# Keep rows that have no NA TaxiIn and no NA TaxiOut: temp2
+temp2 <- filter(hflights, !is.na(TaxiIn), !is.na(TaxiOut))
+
+# Print the maximum taxiing difference of temp2 with summarise()
+summarise(temp2, max_taxi_diff = max(abs(TaxiIn - TaxiOut)))
+
+
+```
+
+
+dplyr aggregate functions
+100xp
+dplyr provides several helpful aggregate functions of its own, in addition to the ones that are already defined in R. These include:
+
+first(x) - The first element of vector x.
+last(x) - The last element of vector x.
+nth(x, n) - The nth element of vector x.
+n() - The number of rows in the data.frame or group of observations that summarise() describes.
+n_distinct(x) - The number of unique values in vector x.
+Next to these dplyr-specific functions, you can also turn a logical test into an aggregating function with sum() or mean(). A logical test returns a vector of TRUE's and FALSE's. When you apply sum() or mean() to such a vector, R coerces each TRUE to a 1 and each FALSE to a 0. sum() then represents the total number of observations that passed the test; mean() represents the proportion.
+
+Instructions
+Print out a summary of hflights with the following variables:
+n_obs: the total number of observations,
+n_carrier: the total number of carriers,
+n_dest: the total number of destinations,
+aa, a tbl with all flights flown by American Airlines, is already available.
+Print out a summary of aa with the following variables:
+n_flights: the total number of flights (each observation is a flight),
+n_canc: the total number of cancelled flights,
+avg_delay: the average arrival delay of flights whose delay is not NA (na.rm = TRUE).
+
+```{r}
+
+```
+
+
+
+
+
 
 
 # Group_by and working with databases
 
 _Complete your mastery of data manipulation with group-wise operations and databases. Learn to use group_by to group your data into subsets of observations, and use dplyr to access data stored outside of R in a database._
 
-
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-
-
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
