@@ -190,32 +190,18 @@ glimpse(hflights)
 
 _Get familiar with dplyr's manipulation verbs. Meet the five verbs and then practice using the mutate and select verbs._
 
+### The five verbs and their meaning
 
+The dplyr package contains five key data manipulation functions, also called verbs:
 
-Comparison to base R
+select(), which returns a subset of the columns,
+filter(), that is able to return a subset of the rows,
+arrange(), that reorders the rows according to single or multiple variables,
+mutate(), used to add columns from existing data,
+summarise(), which reduces each group to a single row by calculating aggregate measures.
+If you want to find out more about these functions, consult the documentation by clicking on the functions above. What order of operations should we use to find the average value of the ArrDelay (arrival delay) variable for all American Airline flights in the hflights tbl?
 
-To see the added value of the dplyr package, it is useful to compare its syntax with base R. Up to now, you have only considered functionality that is also available without the use of dplyr. The elegance and ease-of-use of dplyr is a great plus though.
-
-Instructions
-Finish the select() calls to match the results of the base R commands. Try to make your calls as concise as possible.
-
-```{r}
-# both hflights and dplyr are available
-
-# Finish select call so that ex1d matches ex1r
-ex1r <- hflights[c("TaxiIn", "TaxiOut", "Distance")]
-ex1d <- select(hflights, starts_with("TaxI"), Distance)
-ex1d
-# Finish select call so that ex2d matches ex2r
-ex2r <- hflights[c("Year", "Month", "DayOfWeek", "DepTime", "ArrTime")]
-ex2d <- select(hflights, Year:DayOfWeek, -3, DepTime, ArrTime)
-ex2d
-# Finish select call so that ex3d matches ex3r
-ex3r <- hflights[c("TailNum", "TaxiIn", "TaxiOut")]
-ex3d <- select(hflights, starts_with("Ta"))
-ex3d
-```
-
+Feel free to play around in the console; hflights is preloaded. From now on, the UniqueCarrier column and CancellationCode column contain the recoded versions, similar to the cleaning up you did in the previous chapter.
 
 
 ### Choosing is not losing! The select verb
@@ -248,6 +234,31 @@ select(hflights, Year:DayOfWeek, ArrDelay:Diverted)
 
 
 ```
+
+Comparison to base R
+
+To see the added value of the dplyr package, it is useful to compare its syntax with base R. Up to now, you have only considered functionality that is also available without the use of dplyr. The elegance and ease-of-use of dplyr is a great plus though.
+
+Instructions
+Finish the select() calls to match the results of the base R commands. Try to make your calls as concise as possible.
+
+```{r}
+# both hflights and dplyr are available
+
+# Finish select call so that ex1d matches ex1r
+ex1r <- hflights[c("TaxiIn", "TaxiOut", "Distance")]
+ex1d <- select(hflights, starts_with("TaxI"), Distance)
+ex1d
+# Finish select call so that ex2d matches ex2r
+ex2r <- hflights[c("Year", "Month", "DayOfWeek", "DepTime", "ArrTime")]
+ex2d <- select(hflights, Year:DayOfWeek, -3, DepTime, ArrTime)
+ex2d
+# Finish select call so that ex3d matches ex3r
+ex3r <- hflights[c("TailNum", "TaxiIn", "TaxiOut")]
+ex3d <- select(hflights, starts_with("Ta"))
+ex3d
+```
+
 
 
 ### Helper functions for variable selection
@@ -294,20 +305,18 @@ select(hflights, ends_with("Delay"), ends_with("Time"))
 
 ```
 
+### Mutating is creating
 
-# hflights and dplyr are loaded and ready to serve you.
+mutate() is the second of five data manipulation functions you will get familiar with in this course. mutate() creates new columns which are added to a copy of the dataset.
 
-# Add the new variable ActualGroundTime to a copy of hflights and save the result as g1.
-g1 <- mutate(hflights, ActualGroundTime = ActualElapsedTime - AirTime)
+Take this example that adds a new column, z, which is the element-wise sum of the columns x and y, to the data frame df:
 
-# Add the new variable GroundTime to g1. Save the result as g2.
-g2 <- mutate(g1, GroundTime = TaxiIn + TaxiOut)
-
-# Add the new variable AverageSpeed to g2. Save the result as g3.
-g3 <- mutate(g2, AverageSpeed = Distance / AirTime * 60)
-
-# Print out g3
-
+mutate(df, z = x + y)
+Instructions
+Create a new data frame, g1, which is the data frame hflights with an additional column: ActualGroundTime, the difference between ActualElapsedTime and AirTime.
+Extend g1 further, by adding an additional column GroundTime. This column is the sum of the TaxiIn and TaxiOut columns. Store the resulting data frame in g2. Check in the console that the GroundTime and ActualGroundTime columns are equal.
+Add a new variable to g2 named AverageSpeed that denotes the average speed that each plane flew in miles per hour. Save the resulting dataset as g3. Use the following formula: Distance / AirTime * 60.
+Print out g3.
 
 
 ```{r}
